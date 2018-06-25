@@ -1,0 +1,126 @@
+#hintDisplayer
+{
+    line-height: normal;
+}
+
+
+.textContent
+{
+    display: inline-block;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    color: #000000;
+    font-size: 16px;
+    vertical-align: middle;
+    line-height: normal;
+    font-family: Verdana, Helvetica, sans-serif;
+}
+#SelectAdvice
+{
+    margin-bottom: 3px;
+    text-align: center;
+    font-size: 13px;
+    background-color: #ffffff;
+    width: 180px;
+}
+
+#hintContent
+{
+    height:45px;
+    background-color: #A9EA6B;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.feedbackButton{
+    width: 30px;
+    height: 30px;
+    margin: 2px 4px;
+    color: #ffffff;;
+}
+
+.hintArrowButton{
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: auto;
+    vertical-align: middle;
+    line-height: normal;
+    margin-top: 0px;
+}
+
+#add_button
+{
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+#enterTip
+{
+    position: fixed;
+    bottom: 75px;
+    right: 15px;
+    width: 200px;
+    height: 210px;
+    background-color: #A9EA6B;
+    padding: 16px 4px 4px 4px; 
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-family: Verdana, Helvetica, sans-serif;
+    
+}
+
+#tipLabel
+{
+    color: #000000;
+    font-size: 16px;
+    margin-bottom: 2px; 
+}
+
+#tipText
+{
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border: 1px solid #ffffff; 
+    margin-bottom: 5px;
+}
+
+.label_type
+{
+    text-align: center;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 2px; 
+}
+
+#typeSelector
+{
+    display: block;
+    width: 150px;
+    margin: auto;
+    text-align: center;
+    font-size: 13px;
+    background-color: #ffffff;
+    width: 180px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#addTipButton
+{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: #ff1a1a;
+    border-radius: 5px;
+    border: 1px solid #ff1a1a; 
+    vertical-align: -15px;
+}
+
+

@@ -1,0 +1,24 @@
+{
+	"manifest_version": 2,
+	"version": "1.4",
+	"name" :"advice plug in 1",
+	"description": "A plug in to display advice",
+	"icons":
+	{
+		"16": "img/icon16.png",
+		"48": "img/icon48.png"
+	},
+	"content_scripts":
+	[	
+		{
+			"matches":
+			[
+			"https://worker.mturk.com/"
+			],
+			"js":["jquery-3.3.1.js", "advicebox.js"],
+			"css":["advicebox.css"]
+		}
+	],
+	"permissions": ["tabs","https://worker.mturk.com/"],
+	"web_accessible_resources": ["*.js","img/right_arrow.svg","img/left_arrow.svg", "img/left_arrow.svg", "img/plus.svg","img/like.svg", "img/dislike.svg"]
+}

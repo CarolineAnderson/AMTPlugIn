@@ -1,17 +1,11 @@
 //Initialize array lists of different types of advice the chrome extension can display. 
 //Is somewhat of a placeholder for know for testing purposes until backend is added
 
-var quickHints = ["q tip 1"," q tip2 ", " q tip3", "q tip4"," q tip5"];
-var goodHints = ["good tip 1"," good tip2 ", " good tip3", "good tip4"," good tip5"];
-var otherHints = ["o tip 1","o tip2 ", "o tip3", "o tip4","o tip5"];
 var hintCounter = 0; //keeps track of current hint element of current array
-var currentList = quickHints;
-
-
-
-
-
-
+var currentList = [""];
+ajax_getByType("quick");
+var upVotes = 0;
+var upVoted = false;
 
 
 ///////////////////////////Allows users to see Hints//////////////////////////////////
@@ -63,7 +57,7 @@ selectAdvice.append(otherDisplayOption);
 //Displays the current hint of the current type of advice
 let hintContent = document.createElement("div");
 hintContent.id = "hintContent";
-hintContent.innerHTML = currentList[0];
+//hintContent.innerHTML = currentList[0];
 hintContainer.append(hintContent);
 
 /*========== feedback ==========*/
@@ -73,6 +67,7 @@ let feedbackContainer = document.createElement("div");
 let likeButton = document.createElement("img");
 let likeURL = chrome.runtime.getURL("img/like.svg");
 likeButton.className = "feedbackButton";
+likeButton.id= "likeButton";
 likeButton.src = likeURL;
 feedbackContainer.append(likeButton);
 
@@ -80,6 +75,7 @@ feedbackContainer.append(likeButton);
 let dislikeButton = document.createElement("img");
 let dislikeURL = chrome.runtime.getURL("img/dislike.svg");
 dislikeButton.className = "feedbackButton";
+dislikeButton.id = "dislikeButton";
 dislikeButton.src = dislikeURL;
 feedbackContainer.append(dislikeButton);
 
@@ -112,10 +108,10 @@ $(".text-muted div:eq(1)").before(hintDisplayer); //adding hintDisplayer to page
 
 
 //Allows user to select what kind of hints they want to see
-function changeCurrentList(hitList)
+function changeCurrentList()
 {
     currentList = hitList;
-    hitCounter=0;
+   
     hintContent.innerHTML = hitList[hitCounter];
 }
 
@@ -123,22 +119,29 @@ function changeCurrentList(hitList)
     //console.log("select");
     //console.log($('#SelectAdvice').val());
     hitCounter=0;
-    if($('#SelectAdvice').val()=="good")
+    updateBySelector('#SelectAdvice');
+}));
+
+ function updateBySelector(wantedSelect)
+ {
+  if($(wantedSelect).val()=="good")
     {
-    changeCurrentList(goodHints);
+      ajax_getByType("good");
     }
-    else if ($('#SelectAdvice').val()=="quick") 
+    else if ($(wantedSelect).val()=="quick") 
     { 
-        changeCurrentList(quickHints);
+        ajax_getByType("quick");
     }
     else
     {
-        changeCurrentList(otherHints);
+        ajax_getByType("other");
     }
-}));
+
+ }
 
 
  //Allows users to click right and left buttons to see hints of the current selected type
+ 
 $("#right_arrow").click(function()
 {
     //console.log("Right Arrow clicked");
@@ -147,14 +150,81 @@ $("#right_arrow").click(function()
     hintContent.innerHTML = currentList[hintCounter];
 });
 
+
 $("#left_arrow").click(function()
 {
     //console.log("Left Arrow clicked");
     hintCounter--;
     if(hintCounter<0) {hintCounter=  currentList.length-1;}
     hintContent.innerHTML = currentList[hintCounter];
+    //ajax_get();
+
 });
 
+//Allows users to upvote or downvote hints they like or dislike
+
+$("#likeButton").click(function()
+{ 
+    upVoted = true;
+   ajax_getandUpdateVotes();
+  });
+ $("#dislikeButton").click(function()
+ {
+    upVoted = false;
+    ajax_getandUpdateVotes();
+ });
+
+
+function ajax_updateVotes(){
+  if(upVoted)
+    {upVotes++;}
+  else
+    {upVotes--;}
+  var hr = new XMLHttpRequest();
+  var url = "http:localhost/14/updateVotes.php";
+
+  if(upVotes<=-20)
+  {
+    url = "http:localhost/14/updateVotes2.php";
+    //currentList[hintCounter]= "hidden";
+   // hintContent.innerHTML = currentList[hintCounter];
+  }
+  console.log(currentList[hintCounter]);
+  var adviceText = currentList[hintCounter];
+  var votes = upVotes;
+  var vars = "adviceText="+adviceText+"&votes="+votes;
+  hr.open("POST", url,true);
+  hr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  hr.onreadystatechange = function() {
+    if(hr.readyState ==4 && hr.status == 200) {
+      var return_data = hr.responseText;
+      console.log(return_data);
+    }
+  }
+  hr.send(vars);
+}
+
+function ajax_getandUpdateVotes(){
+  var searchText = $("#hintContent").html();
+  var hr = new XMLHttpRequest();
+  var url = "http:localhost/14/getVotes.php";
+  var type = "searchText="+searchText;
+  hr.open("POST", url,true);
+  hr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  hr.onreadystatechange = function() {
+    if(hr.readyState ==4 && hr.status == 200) {
+      var return_data = hr.responseText;
+     console.log(return_data);
+     var object= $.parseJSON(return_data);
+     //var val = parseInt(object[0]);
+     //console.log(val);
+     upVotes =parseInt(object[0]);
+     console.log(upVotes);
+     ajax_updateVotes();
+    }
+  }
+  hr.send(type);
+}
 
 ///////////////////////////Allows users to add Hints/////////////////////////////////
 
@@ -180,6 +250,11 @@ tipLabel.innerHTML = "Add your advice";
 
 var tipText = document.createElement("textarea");
 tipText.id = "tipText";
+
+var addTipButton = document.createElement("button");
+addTipButton.id = "addTipButton";
+addTipButton.innerHTML= "Add Advice";
+
 
 var addTipButton = document.createElement("button");
 addTipButton.id = "addTipButton";
@@ -218,6 +293,7 @@ $("#MainContent").append(addHintButton);
 $("#enterTip").append(addTipButton);
 
 
+
 //////////Navigating Hint Adder//////////
 
 //adds hint to the specified hint type list
@@ -227,39 +303,94 @@ $("#add_button").click(function()
 	$("#enterTip").toggle();
 });
 
+
 //Add hint to the type of hint list specified by the selector (does not allow repeat hints)
 $("#addTipButton").click(function()
-{
-	var newTip = $("#tipText").val();
-    var selectedType = $('#typeSelector').val();
-    var selectedArray = quickHints;
-    //console.log(newTip);
-    if(selectedType=="good")
-    {
-        selectedArray= goodHints;
-    }
-    else if (selectedType =="quick") 
-    {   
-        selectedArray = quickHints;
-    }
-    else
-    {   
-        selectedArray = otherHints;
-    }
-    if(jQuery.inArray(newTip, selectedArray) ==-1)
-    {
-        selectedArray.push(newTip);
-    }
-    else
-    {
-    	console.log("that is already in our list!");
-    }
-    console.log(currentList);
+{ 
+     var advice = $("#tipText").val();
+     //console.log($('#typeSelector').val());
+     //console.log($('#SelectAdvice').val());
+     if(($('#typeSelector').val())===($('#SelectAdvice').val()))
+     {
+      //console.log("true");
+      currentList.push(advice);
+      hintContent.innerHTML = currentList[hintCounter];
+     }
+    
+    //console.log($('#typeSelector').val());
+    ajax_post();
+    //updateBySelector("#typeSelector");
+
+
 });
 
 
+function ajax_post(){
+  var hr = new XMLHttpRequest();
+  var url = "http:localhost/14/newDataEntry.php";
+  var adviceText = $("#tipText").val();
+  var adviceType = $('#typeSelector').val();
+  var vars = "adviceText=" +adviceText+"&workerId="+workerId+"&adviceType="+adviceType;
+  hr.open("POST", url,true);
+  hr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  hr.onreadystatechange = function() {
+    if(hr.readyState ==4 && hr.status == 200) {
+      var return_data = hr.responseText;
+      console.log(return_data);
+    }
+  }
+  hr.send(vars);
+}
+
+//console.log($("span[data-reactid= .0.1.0]"));
+//console.log($('.copyable-content').first().html());
+var first = $('.copyable-content').first().html().indexOf('A');
+var second = $('.copyable-content').first().html().indexOf('<',2);
+var workerId = $('.copyable-content').first().html().substring(first,second);
+console.log(workerId);
 
 
 
+function ajax_getAll(){
+  var hr = new XMLHttpRequest();
+  var url = "http:localhost/test7.php";
+  hr.open("GET", url,true);
+  hr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  hr.onreadystatechange = function() {
+    if(hr.readyState ==4 && hr.status == 200) {
+      var return_data = hr.responseText;
+      console.log(return_data);
+      var object= $.parseJSON(return_data);
+      console.log(object[0]);
+      currentList = object;
+      hintContent.innerHTML = object[0];
+      //hintContent.innerHTML = return_data;
+
+    }
+  }
+  hr.send();
+}
 
 
+function ajax_getByType(selectedType){
+  var hr = new XMLHttpRequest();
+  var url = "http:localhost/14/getAdByType.php";
+  var type = "type="+selectedType;
+  hr.open("POST", url,true);
+  hr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  hr.onreadystatechange = function() {
+    if(hr.readyState ==4 && hr.status == 200) {
+      var return_data = hr.responseText;
+      var object= $.parseJSON(return_data);
+      currentList = object;
+      hintContent.innerHTML = object[0];
+    }
+  }
+  hr.send(type);
+}
+
+/*
+$('body').click(function(){
+  console.log('clicked');
+});
+*/

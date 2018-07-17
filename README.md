@@ -17,8 +17,7 @@ The name of the mySQL database is adviceStorage and the table name is hints.
 
 
 
-| hints |
-| ------------- | ------------- |
+
 | data type  | field |
 | ------------- | ------------- |
 | int | unique id |

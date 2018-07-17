@@ -6,6 +6,9 @@ A plug in to display advice at https://worker.mturk.com/
 The extension folder hold all of the files necessary for the chrome extension to operate. To download the extension, go to chrome://extensions/, 
 click "load unpacked" and select extensionFiles.
 
+![alt text](screenshots/pic1.png "Description goes here")
+
+
 --------------------------------------- phpFiles ---------------------------------------------
 The phpFiles hold all the php code that is referenced in the extension so the advice that the user inputs into the extension is posted to the 
 database and can be seen by all users.

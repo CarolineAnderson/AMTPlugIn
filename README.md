@@ -20,4 +20,9 @@ The name of the mySQL database is adviceStorage and the table name is hints. Thi
 | id| int|
 | adviceText | text |
 | workerId | text |
+| adviceType| text |
+| upVotes| int|
+| hidden| text|
+
+If upVotes is greater than 10, then advicebox.js sets the hidden field to true and users can no longer see that piece of advice.
 

@@ -39,13 +39,6 @@
 			[
 			"<all_urls>"
 			],
-			"js":["jquery-3.3.1.js","postNewEarningData.js"]
-		},
-		{
-			"matches":
-			[
-			"<all_urls>"
-			],
 			"js":["jquery-3.3.1.js","trackActivity2.js"]
 		},
 		

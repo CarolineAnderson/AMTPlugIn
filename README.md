@@ -6,8 +6,6 @@ A plug in to display advice at https://worker.mturk.com/
 The extension folder hold all of the files necessary for the chrome extension to operate. To download the extension, go to chrome://extensions/, 
 click "load unpacked" and select extensionFiles.
 
-![alt text](screenshots/pic1.png "Description goes here")
-
 
 --------------------------------------- phpFiles ---------------------------------------------
 The phpFiles hold all the php code that is referenced in the extension so the advice that the user inputs into the extension is posted to the 
@@ -28,6 +26,13 @@ The name of the mySQL database is adviceStorage and the table name is hints. Thi
 | upVotes| int|
 | hidden| text|
 
-If upVotes is greater than 10, then advicebox.js sets the hidden field to true and users can no longer see that piece of advice.
 
-h
+---------------How to use----------------------
+![alt text](screenshots/pic1.png "Description goes here")
+
+This is what the extension should look like when first downloaded. The green box reads undefined since there is nothing in the database.
+
+![alt text](screenshots/pic2.png "Description goes here")
+
+When you click on the red circle in the bottom right corner, a box should display that lets you add new hints. Click "Add Advice" to add this information to the database.
+Click the thumbs up if you like a piece of advice and click thumbs down if you do not like the piece of advice. If upVotes becomes -10 or lower, then users can no longer see this piece of advice.

@@ -16,8 +16,9 @@ must be running for the extension to operate. In the htdocs folder under XAMPP f
 The name of the mySQL database is adviceStorage and the table name is hints. 
 
 
-hints
 
+| hints |
+| ------------- | ------------- |
 | data type  | field |
 | ------------- | ------------- |
 | int | unique id |
